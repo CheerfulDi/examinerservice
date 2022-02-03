@@ -20,7 +20,7 @@ public class ExaminerServiceImpl implements ExaminerService {
     public Collection<Question> getQuestions(int amount) {
         if (amount > 0) {
             Set<Question> uniqueQuestions = new HashSet<>(amount);
-            while (uniqueQuestions.size() <= amount) {
+            while (uniqueQuestions.size() < amount) {
                 uniqueQuestions.add(questionService.getRandomQuestion());
             }
             return uniqueQuestions;

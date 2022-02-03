@@ -35,13 +35,6 @@ public class ExaminerServiceTest {
     @InjectMocks
     ExaminerServiceImpl out;
 
-    @BeforeEach
-    public void setUp() {
-        Mockito.when(questionServiceMock.getAll()).thenReturn(List.of(
-                new Question(DEFAULT_QUESTION1, DEFAULT_ANSWER1),
-                new Question(DEFAULT_QUESTION2, DEFAULT_ANSWER2)
-        ));
-    }
 
     @Test
     public void shouldGetQuestions() {
@@ -61,6 +54,10 @@ public class ExaminerServiceTest {
     @ParameterizedTest
     @MethodSource("provideParamsForTest")
     public void shouldThrowQuestionOutOfBoundsException(int amount) {
+        Mockito.when(questionServiceMock.getAll()).thenReturn(List.of(
+                new Question(DEFAULT_QUESTION1, DEFAULT_ANSWER1),
+                new Question(DEFAULT_QUESTION2, DEFAULT_ANSWER2)
+        ));
         questionServiceMock.getAll();
         assertThrows(QuestionsOutOfBoundsException.class,
                 ()-> out.getQuestions(amount),
