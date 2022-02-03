@@ -12,6 +12,7 @@ public class TestConstants {
     public static final String DEFAULT_ANSWER2 = "CamelCase";
 
     public static final int DEFAULT_AMOUNT = 2;
-    public static final int DEFAULT_AMOUNT2 = 3;
+    public static final int DEFAULT_AMOUNT2 = -1;
     public static final int DEFAULT_AMOUNT3 = 0;
+
 }

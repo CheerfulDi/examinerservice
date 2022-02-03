@@ -15,9 +15,7 @@ import pro.sky.java.cource2.examinerservice.model.Question;
 import pro.sky.java.cource2.examinerservice.service.ExaminerServiceImpl;
 import pro.sky.java.cource2.examinerservice.service.QuestionService;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -38,7 +36,7 @@ public class ExaminerServiceTest {
     ExaminerServiceImpl out;
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         Mockito.when(questionServiceMock.getAll()).thenReturn(List.of(
                 new Question(DEFAULT_QUESTION1, DEFAULT_ANSWER1),
                 new Question(DEFAULT_QUESTION2, DEFAULT_ANSWER2)
@@ -47,14 +45,17 @@ public class ExaminerServiceTest {
 
     @Test
     public void shouldGetQuestions() {
+        Mockito.when(questionServiceMock.getRandomQuestion()).thenReturn((
+                new Question(DEFAULT_QUESTION1, DEFAULT_ANSWER1)),
+                new Question(DEFAULT_QUESTION2, DEFAULT_ANSWER2));
+
         Collection<Question> actual = out.getQuestions(DEFAULT_AMOUNT);
-        Collection<Question> expected = new ArrayList<>(questionServiceMock.getAll());
 
-                for (int i = 0; i < DEFAULT_AMOUNT; i++) {
-                    expected.add(questionServiceMock.getRandomQuestion());
-                }
+        Collection<Question> expected = new HashSet<>(DEFAULT_AMOUNT);
+        expected.add(new Question(DEFAULT_QUESTION1, DEFAULT_ANSWER1));
+        expected.add(new Question(DEFAULT_QUESTION2, DEFAULT_ANSWER2));
+
         assertIterableEquals(expected, actual);
-
     }
 
     @ParameterizedTest
@@ -62,10 +63,8 @@ public class ExaminerServiceTest {
     public void shouldThrowQuestionOutOfBoundsException(int amount) {
         questionServiceMock.getAll();
         assertThrows(QuestionsOutOfBoundsException.class,
-                ()-> out.getQuestions(amount), "The number of requested questions does not match the number of existing questions in the service.");
+                ()-> out.getQuestions(amount),
+                "The number of requested questions does not match the number of existing questions in the service.");
     }
-
-
-
 
 }

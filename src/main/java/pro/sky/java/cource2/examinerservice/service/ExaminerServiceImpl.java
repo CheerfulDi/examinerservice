@@ -4,10 +4,7 @@ import org.springframework.stereotype.Service;
 import pro.sky.java.cource2.examinerservice.exceptions.QuestionsOutOfBoundsException;
 import pro.sky.java.cource2.examinerservice.model.Question;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Service
 public class ExaminerServiceImpl implements ExaminerService {
@@ -21,16 +18,15 @@ public class ExaminerServiceImpl implements ExaminerService {
 
     @Override
     public Collection<Question> getQuestions(int amount) {
-        if (amount != 0) {
-            List<Question> questionsList = new ArrayList<>(questionService.getAll());
-            if (amount <= questionsList.size()) {
-                for (int i = 0; i < amount; i++) {
-                    questionsList.add(questionService.getRandomQuestion());
-                }
-                return questionsList;
+        if (amount > 0) {
+            Set<Question> uniqueQuestions = new HashSet<>(amount);
+            while (uniqueQuestions.size() <= amount) {
+                uniqueQuestions.add(questionService.getRandomQuestion());
             }
+            return uniqueQuestions;
         }
         throw new QuestionsOutOfBoundsException();
     }
-}
+    }
+
 

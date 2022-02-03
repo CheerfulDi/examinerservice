@@ -45,9 +45,7 @@ public class JavaQuestionService implements QuestionService {
 
     @Override
     public Collection<Question> getAll() {
-        List<Question> questionsList = new ArrayList<>(questions.size());
-        questionsList.addAll(questions);
-        return questionsList;
+        return Set.copyOf(questions);
     }
 
     @Override
