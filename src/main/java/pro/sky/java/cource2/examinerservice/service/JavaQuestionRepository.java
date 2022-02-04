@@ -1,28 +1,28 @@
 package pro.sky.java.cource2.examinerservice.service;
 
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import pro.sky.java.cource2.examinerservice.exceptions.QuestionExistsException;
 import pro.sky.java.cource2.examinerservice.exceptions.QuestionNotFoundException;
 import pro.sky.java.cource2.examinerservice.model.Question;
 
-import java.util.*;
+import javax.annotation.PostConstruct;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
-import static org.apache.commons.lang3.RandomUtils.nextInt;
-
-@Repository
 @Service
-public class JavaQuestionService implements QuestionService {
+public class JavaQuestionRepository implements QuestionRepository{
 
+    private final QuestionRepository questionRepository;
     Set<Question> questions = new HashSet<>();
 
-    @Override
-    public Question add(String question, String answer) {
-        Question newQuestion = new Question(question, answer);
-        if (questions.contains(newQuestion)) {
-            throw new QuestionExistsException();
-        } else questions.add(newQuestion);
-        return newQuestion;
+    public JavaQuestionRepository (QuestionRepository questionRepository) {
+        this.questionRepository = questionRepository;
+    }
+
+    @PostConstruct
+    public void init() {
+
     }
 
     @Override
@@ -48,14 +48,6 @@ public class JavaQuestionService implements QuestionService {
     @Override
     public Collection<Question> getAll() {
         return Set.copyOf(questions);
-    }
-
-    @Override
-    public Question getRandomQuestion() {
-        List<Question> questionsList = new ArrayList<>(questions.size());
-        questionsList.addAll(questions);
-        int randomIndex = nextInt(0, questionsList.size());
-        return questionsList.get(randomIndex);
     }
 
 }

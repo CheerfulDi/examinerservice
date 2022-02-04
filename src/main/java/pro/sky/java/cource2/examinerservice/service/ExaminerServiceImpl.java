@@ -1,5 +1,7 @@
 package pro.sky.java.cource2.examinerservice.service;
 
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import pro.sky.java.cource2.examinerservice.exceptions.QuestionsOutOfBoundsException;
 import pro.sky.java.cource2.examinerservice.model.Question;
@@ -12,7 +14,7 @@ public class ExaminerServiceImpl implements ExaminerService {
     private final Random random = new Random();
     private final QuestionService questionService;
 
-    public ExaminerServiceImpl(QuestionService questionService) {
+    public ExaminerServiceImpl(@Qualifier("javaQuestionService") QuestionService questionService) {
         this.questionService = questionService;
     }
 

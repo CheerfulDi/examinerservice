@@ -1,5 +1,6 @@
 package pro.sky.java.cource2.examinerservice.service;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import pro.sky.java.cource2.examinerservice.exceptions.QuestionExistsException;
@@ -12,7 +13,7 @@ import static org.apache.commons.lang3.RandomUtils.nextInt;
 
 @Repository
 @Service
-public class JavaQuestionService implements QuestionService {
+public class MathQuestionService implements QuestionService{
 
     Set<Question> questions = new HashSet<>();
 
@@ -57,5 +58,4 @@ public class JavaQuestionService implements QuestionService {
         int randomIndex = nextInt(0, questionsList.size());
         return questionsList.get(randomIndex);
     }
-
 }
