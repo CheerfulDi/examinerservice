@@ -1,6 +1,5 @@
 package pro.sky.java.cource2.examinerservice.service;
 
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import pro.sky.java.cource2.examinerservice.exceptions.QuestionExistsException;
 import pro.sky.java.cource2.examinerservice.exceptions.QuestionNotFoundException;
@@ -10,35 +9,38 @@ import java.util.*;
 
 import static org.apache.commons.lang3.RandomUtils.nextInt;
 
-@Repository
 @Service
 public class JavaQuestionService implements QuestionService {
 
-    Set<Question> questions = new HashSet<>();
+    private final JavaQuestionRepository javaQuestionRepository;
+
+    public JavaQuestionService(JavaQuestionRepository javaQuestionRepository) {
+        this.javaQuestionRepository = javaQuestionRepository;
+    }
 
     @Override
     public Question add(String question, String answer) {
         Question newQuestion = new Question(question, answer);
-        if (questions.contains(newQuestion)) {
+        if (javaQuestionRepository.questions.contains(newQuestion)) {
             throw new QuestionExistsException();
-        } else questions.add(newQuestion);
+        } else javaQuestionRepository.questions.add(newQuestion);
         return newQuestion;
     }
 
     @Override
     public Question add(Question question) {
-        if (questions.contains(question)) {
+        if (javaQuestionRepository.questions.contains(question)) {
             throw new QuestionExistsException();
         } else {
-            questions.add(question);
+            javaQuestionRepository.questions.add(question);
         }
         return question;
     }
 
     @Override
     public Question remove(Question question) {
-        if (questions.contains(question)) {
-            questions.remove(question);
+        if (javaQuestionRepository.questions.contains(question)) {
+            javaQuestionRepository.questions.remove(question);
             return question;
         } else {
             throw new QuestionNotFoundException();
@@ -47,13 +49,13 @@ public class JavaQuestionService implements QuestionService {
 
     @Override
     public Collection<Question> getAll() {
-        return Set.copyOf(questions);
+        return Set.copyOf(javaQuestionRepository.questions);
     }
 
     @Override
     public Question getRandomQuestion() {
-        List<Question> questionsList = new ArrayList<>(questions.size());
-        questionsList.addAll(questions);
+        List<Question> questionsList = new ArrayList<>(javaQuestionRepository.questions.size());
+        questionsList.addAll(javaQuestionRepository.questions);
         int randomIndex = nextInt(0, questionsList.size());
         return questionsList.get(randomIndex);
     }

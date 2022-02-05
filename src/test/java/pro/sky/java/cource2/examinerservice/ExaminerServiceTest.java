@@ -38,15 +38,23 @@ public class ExaminerServiceTest {
 
     @Test
     public void shouldGetQuestions() {
-        Mockito.when(questionServiceMock.getRandomQuestion()).thenReturn((
-                new Question(DEFAULT_QUESTION1, DEFAULT_ANSWER1)),
-                new Question(DEFAULT_QUESTION2, DEFAULT_ANSWER2));
+        Mockito.when(questionServiceMock.getAll()).thenReturn(List.of(
+                new Question(DEFAULT_QUESTION1, DEFAULT_ANSWER1),
+                new Question(DEFAULT_QUESTION2, DEFAULT_ANSWER2),
+                new Question(DEFAULT_QUESTION3, DEFAULT_ANSWER3)
+        ));
+
+        Mockito.when(questionServiceMock.getRandomQuestion()).thenReturn(
+                new Question(DEFAULT_QUESTION1, DEFAULT_ANSWER1),
+                new Question(DEFAULT_QUESTION2, DEFAULT_ANSWER2),
+                new Question(DEFAULT_QUESTION3, DEFAULT_ANSWER3));
 
         Collection<Question> actual = out.getQuestions(DEFAULT_AMOUNT);
 
         Collection<Question> expected = new HashSet<>(DEFAULT_AMOUNT);
         expected.add(new Question(DEFAULT_QUESTION1, DEFAULT_ANSWER1));
         expected.add(new Question(DEFAULT_QUESTION2, DEFAULT_ANSWER2));
+        expected.add(new Question(DEFAULT_QUESTION3, DEFAULT_ANSWER3));
 
         assertIterableEquals(expected, actual);
     }

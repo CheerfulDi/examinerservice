@@ -1,6 +1,6 @@
 package pro.sky.java.cource2.examinerservice.service;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 import pro.sky.java.cource2.examinerservice.exceptions.QuestionExistsException;
 import pro.sky.java.cource2.examinerservice.exceptions.QuestionNotFoundException;
 import pro.sky.java.cource2.examinerservice.model.Question;
@@ -10,19 +10,16 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-@Service
+@Repository
 public class MathQuestionRepository implements QuestionRepository {
 
-    private final QuestionRepository questionRepository;
     Set<Question> questions = new HashSet<>();
-
-    public MathQuestionRepository (QuestionRepository questionRepository) {
-        this.questionRepository = questionRepository;
-    }
 
     @PostConstruct
     public void init() {
-
+        new Question("2+2=?", "4");
+        new Question("5*5=?", "25");
+        new Question("27/3=?", "9");
     }
 
     @Override
