@@ -47,24 +47,32 @@ public class JavaQuestionServiceTest {
     @Test
     public void shouldAddToQuestionsSet() {
 
+        Mockito.when(javaQuestionRepositoryMock.add(DEFAULT_QUESTION4,DEFAULT_ANSWER4)).thenReturn(
+                new Question(DEFAULT_QUESTION4,DEFAULT_ANSWER4));
         assertEquals(new Question(DEFAULT_QUESTION4,DEFAULT_ANSWER4), out.add(DEFAULT_QUESTION4,DEFAULT_ANSWER4));
     }
 
     @Test
     public void shouldAddToQuestionsSetByObject() {
 
-        assertEquals(new Question(DEFAULT_QUESTION2,DEFAULT_ANSWER2),
-                out.add(new Question(DEFAULT_QUESTION2,DEFAULT_ANSWER2)));
+        Mockito.when(javaQuestionRepositoryMock.add(new Question(DEFAULT_QUESTION4,DEFAULT_ANSWER4))).thenReturn(
+                new Question(DEFAULT_QUESTION4,DEFAULT_ANSWER4));
+
+        assertEquals(new Question(DEFAULT_QUESTION4,DEFAULT_ANSWER4),
+                out.add(new Question(DEFAULT_QUESTION4,DEFAULT_ANSWER4)));
     }
 
     @Test
     public void shouldRemoveFromQuestionsSet() {
+        Mockito.when(javaQuestionRepositoryMock.remove(new Question(DEFAULT_QUESTION2,DEFAULT_ANSWER2))).thenReturn(
+                new Question(DEFAULT_QUESTION2,DEFAULT_ANSWER2));
         assertEquals(new Question(DEFAULT_QUESTION2, DEFAULT_ANSWER2),
                 out.remove(new Question(DEFAULT_QUESTION2,DEFAULT_ANSWER2)));
     }
 
     @Test
     public void shouldGetAllQuestions() {
+        javaQuestionRepositoryMock.getAll();
         out.add(DEFAULT_QUESTION1,DEFAULT_ANSWER1);
         out.add(DEFAULT_QUESTION2,DEFAULT_ANSWER2);
         out.add(DEFAULT_QUESTION3,DEFAULT_ANSWER3);
@@ -73,20 +81,28 @@ public class JavaQuestionServiceTest {
 
     @Test
     public void shouldThrowQuestionExistException() {
-        out.add(DEFAULT_QUESTION1,DEFAULT_ANSWER1);
+        Mockito.when(javaQuestionRepositoryMock.add(DEFAULT_QUESTION4,DEFAULT_ANSWER4)).thenReturn(
+                new Question(DEFAULT_QUESTION4,DEFAULT_ANSWER4));
+        out.add(DEFAULT_QUESTION4,DEFAULT_ANSWER4);
         assertThrows(QuestionExistsException.class,
-                ()-> out.add(DEFAULT_QUESTION1, DEFAULT_ANSWER1), "The q-a pair is already exist");
+                ()-> out.add(DEFAULT_QUESTION4, DEFAULT_ANSWER4), "The q-a pair is already exist");
     }
 
     @Test
     public void shouldThrowQuestionNotFoundException() {
-        out.add(DEFAULT_QUESTION1,DEFAULT_ANSWER1);
+        Mockito.when(javaQuestionRepositoryMock.add(DEFAULT_QUESTION4,DEFAULT_ANSWER4)).thenReturn(
+                new Question(DEFAULT_QUESTION4,DEFAULT_ANSWER4));
+        out.add(DEFAULT_QUESTION4,DEFAULT_ANSWER4);
         assertThrows(QuestionNotFoundException.class,
                 ()-> out.remove(new Question(DEFAULT_QUESTION2,DEFAULT_ANSWER2)), "Question is not found");
     }
 
     @Test
     public void shouldGetRandomQuestion() {
+        Mockito.when(javaQuestionRepositoryMock.add(DEFAULT_QUESTION4,DEFAULT_ANSWER4)).thenReturn(
+                new Question(DEFAULT_QUESTION1,DEFAULT_ANSWER1),
+                new Question(DEFAULT_QUESTION2,DEFAULT_ANSWER2)
+        );
         out.add(DEFAULT_QUESTION1,DEFAULT_ANSWER1);
         out.add(DEFAULT_QUESTION2,DEFAULT_ANSWER2);
 

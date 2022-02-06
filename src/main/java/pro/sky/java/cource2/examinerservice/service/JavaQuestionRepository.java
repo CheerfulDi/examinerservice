@@ -18,9 +18,18 @@ public class JavaQuestionRepository implements QuestionRepository{
 
     @PostConstruct
     public void init() {
-        questions.add(new Question("Что такое наследование?", "Под наследованием подразумевается, что один класс может наследовать другой класс."));
-        questions.add(new Question("Что такое инкапсуляция?", "Инкапсуляция — это сокрытие реализации при помощи модификаторов доступа, при помощи геттеров и сеттеров."));
-        questions.add(new Question("Что такое полиморфизм?", "Полиморфизм — это способность программы идентично использовать объекты с одинаковым интерфейсом без информации о конкретном типе этого объекта."));
+        new Question("Что такое наследование?", "Под наследованием подразумевается, что один класс может наследовать другой класс.");
+        new Question("Что такое инкапсуляция?", "Инкапсуляция — это сокрытие реализации при помощи модификаторов доступа, при помощи геттеров и сеттеров.");
+        new Question("Что такое полиморфизм?", "Полиморфизм — это способность программы идентично использовать объекты с одинаковым интерфейсом без информации о конкретном типе этого объекта.");
+    }
+
+    @Override
+    public Question add(String question, String answer) {
+        Question newQuestion = new Question(question, answer);
+        if (questions.contains(newQuestion)) {
+            throw new QuestionExistsException();
+        } else questions.add(newQuestion);
+        return newQuestion;
     }
 
     @Override

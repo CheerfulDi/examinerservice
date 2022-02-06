@@ -23,6 +23,15 @@ public class MathQuestionRepository implements QuestionRepository {
     }
 
     @Override
+    public Question add(String question, String answer) {
+        Question newQuestion = new Question(question, answer);
+        if (questions.contains(newQuestion)) {
+            throw new QuestionExistsException();
+        } else questions.add(newQuestion);
+        return newQuestion;
+    }
+
+    @Override
     public Question add(Question question) {
         if (questions.contains(question)) {
             throw new QuestionExistsException();
