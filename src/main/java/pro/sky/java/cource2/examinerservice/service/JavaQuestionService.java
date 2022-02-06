@@ -21,26 +21,26 @@ public class JavaQuestionService implements QuestionService {
     @Override
     public Question add(String question, String answer) {
         Question newQuestion = new Question(question, answer);
-        if (javaQuestionRepository.questions.contains(newQuestion)) {
+        if (javaQuestionRepository.getAll().contains(newQuestion)) {
             throw new QuestionExistsException();
-        } else javaQuestionRepository.questions.add(newQuestion);
+        } else javaQuestionRepository.add(newQuestion);
         return newQuestion;
     }
 
     @Override
     public Question add(Question question) {
-        if (javaQuestionRepository.questions.contains(question)) {
+        if (javaQuestionRepository.getAll().contains(question)) {
             throw new QuestionExistsException();
         } else {
-            javaQuestionRepository.questions.add(question);
+            javaQuestionRepository.add(question);
         }
         return question;
     }
 
     @Override
     public Question remove(Question question) {
-        if (javaQuestionRepository.questions.contains(question)) {
-            javaQuestionRepository.questions.remove(question);
+        if (javaQuestionRepository.getAll().contains(question)) {
+            javaQuestionRepository.remove(question);
             return question;
         } else {
             throw new QuestionNotFoundException();
@@ -49,13 +49,13 @@ public class JavaQuestionService implements QuestionService {
 
     @Override
     public Collection<Question> getAll() {
-        return Set.copyOf(javaQuestionRepository.questions);
+        return Set.copyOf(javaQuestionRepository.getAll());
     }
 
     @Override
     public Question getRandomQuestion() {
-        List<Question> questionsList = new ArrayList<>(javaQuestionRepository.questions.size());
-        questionsList.addAll(javaQuestionRepository.questions);
+        List<Question> questionsList = new ArrayList<>(javaQuestionRepository.getAll().size());
+        questionsList.addAll(javaQuestionRepository.getAll());
         int randomIndex = nextInt(0, questionsList.size());
         return questionsList.get(randomIndex);
     }

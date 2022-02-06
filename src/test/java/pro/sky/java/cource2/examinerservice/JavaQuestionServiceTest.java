@@ -15,14 +15,13 @@ import pro.sky.java.cource2.examinerservice.service.JavaQuestionService;
 
 import java.util.*;
 
-import static org.apache.commons.lang3.RandomUtils.nextInt;
 import static org.junit.jupiter.api.Assertions.*;
 import static pro.sky.java.cource2.examinerservice.TestConstants.*;
 
 @ExtendWith(MockitoExtension.class)
 public class JavaQuestionServiceTest {
 
-    Set<Question> questionsForTest = new HashSet<>();
+    Set<Question> questionsForTest = new LinkedHashSet<>();
 
     @Mock
     JavaQuestionRepository javaQuestionRepositoryMock;
@@ -37,26 +36,17 @@ public class JavaQuestionServiceTest {
         questionsForTest.add(new Question(DEFAULT_QUESTION2, DEFAULT_ANSWER2));
         questionsForTest.add(new Question(DEFAULT_QUESTION3, DEFAULT_ANSWER3));
 
-        Mockito.when(javaQuestionRepositoryMock.getAll()).thenReturn(List.of(
-                new Question(DEFAULT_QUESTION1,DEFAULT_ANSWER1),
-                new Question(DEFAULT_QUESTION2, DEFAULT_ANSWER2),
-                new Question(DEFAULT_QUESTION3, DEFAULT_ANSWER3)
-    ));
+        Mockito.when(javaQuestionRepositoryMock.getAll()).thenReturn(Collections.unmodifiableCollection(questionsForTest));
+
     }
 
     @Test
     public void shouldAddToQuestionsSet() {
-
-        Mockito.when(javaQuestionRepositoryMock.add(DEFAULT_QUESTION4,DEFAULT_ANSWER4)).thenReturn(
-                new Question(DEFAULT_QUESTION4,DEFAULT_ANSWER4));
         assertEquals(new Question(DEFAULT_QUESTION4,DEFAULT_ANSWER4), out.add(DEFAULT_QUESTION4,DEFAULT_ANSWER4));
     }
 
     @Test
     public void shouldAddToQuestionsSetByObject() {
-
-        Mockito.when(javaQuestionRepositoryMock.add(new Question(DEFAULT_QUESTION4,DEFAULT_ANSWER4))).thenReturn(
-                new Question(DEFAULT_QUESTION4,DEFAULT_ANSWER4));
 
         assertEquals(new Question(DEFAULT_QUESTION4,DEFAULT_ANSWER4),
                 out.add(new Question(DEFAULT_QUESTION4,DEFAULT_ANSWER4)));
@@ -64,8 +54,7 @@ public class JavaQuestionServiceTest {
 
     @Test
     public void shouldRemoveFromQuestionsSet() {
-        Mockito.when(javaQuestionRepositoryMock.remove(new Question(DEFAULT_QUESTION2,DEFAULT_ANSWER2))).thenReturn(
-                new Question(DEFAULT_QUESTION2,DEFAULT_ANSWER2));
+
         assertEquals(new Question(DEFAULT_QUESTION2, DEFAULT_ANSWER2),
                 out.remove(new Question(DEFAULT_QUESTION2,DEFAULT_ANSWER2)));
     }
@@ -73,44 +62,29 @@ public class JavaQuestionServiceTest {
     @Test
     public void shouldGetAllQuestions() {
         javaQuestionRepositoryMock.getAll();
-        out.add(DEFAULT_QUESTION1,DEFAULT_ANSWER1);
-        out.add(DEFAULT_QUESTION2,DEFAULT_ANSWER2);
-        out.add(DEFAULT_QUESTION3,DEFAULT_ANSWER3);
-        assertIterableEquals(questionsForTest, out.getAll());
+        assertEquals(questionsForTest.size(), out.getAll().size());
     }
 
     @Test
     public void shouldThrowQuestionExistException() {
-        Mockito.when(javaQuestionRepositoryMock.add(DEFAULT_QUESTION4,DEFAULT_ANSWER4)).thenReturn(
-                new Question(DEFAULT_QUESTION4,DEFAULT_ANSWER4));
-        out.add(DEFAULT_QUESTION4,DEFAULT_ANSWER4);
+        javaQuestionRepositoryMock.getAll();
         assertThrows(QuestionExistsException.class,
-                ()-> out.add(DEFAULT_QUESTION4, DEFAULT_ANSWER4), "The q-a pair is already exist");
+                ()-> out.add(DEFAULT_QUESTION3, DEFAULT_ANSWER3), "The q-a pair is already exist");
     }
 
     @Test
     public void shouldThrowQuestionNotFoundException() {
-        Mockito.when(javaQuestionRepositoryMock.add(DEFAULT_QUESTION4,DEFAULT_ANSWER4)).thenReturn(
-                new Question(DEFAULT_QUESTION4,DEFAULT_ANSWER4));
-        out.add(DEFAULT_QUESTION4,DEFAULT_ANSWER4);
+        javaQuestionRepositoryMock.getAll();
         assertThrows(QuestionNotFoundException.class,
-                ()-> out.remove(new Question(DEFAULT_QUESTION2,DEFAULT_ANSWER2)), "Question is not found");
+                ()-> out.remove(new Question(DEFAULT_QUESTION4,DEFAULT_ANSWER4)), "Question is not found");
     }
 
     @Test
     public void shouldGetRandomQuestion() {
-        Mockito.when(javaQuestionRepositoryMock.add(DEFAULT_QUESTION4,DEFAULT_ANSWER4)).thenReturn(
-                new Question(DEFAULT_QUESTION1,DEFAULT_ANSWER1),
-                new Question(DEFAULT_QUESTION2,DEFAULT_ANSWER2)
-        );
-        out.add(DEFAULT_QUESTION1,DEFAULT_ANSWER1);
-        out.add(DEFAULT_QUESTION2,DEFAULT_ANSWER2);
+        Mockito.when(out.getAll()).thenReturn(List.of(
+                new Question(DEFAULT_QUESTION1,DEFAULT_ANSWER1)));
 
-        List<Question> questionsListForTest = new ArrayList<>(questionsForTest.size());
-        questionsListForTest.addAll(questionsForTest);
-        int randomIndex = nextInt(0, questionsListForTest.size());
-
-        assertEquals(questionsListForTest.get(randomIndex), out.getRandomQuestion());
+        assertEquals(new Question(DEFAULT_QUESTION1,DEFAULT_ANSWER1), out.getRandomQuestion());
 
     }
 

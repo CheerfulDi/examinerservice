@@ -8,13 +8,14 @@ import pro.sky.java.cource2.examinerservice.model.Question;
 import javax.annotation.PostConstruct;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Repository
 public class JavaQuestionRepository implements QuestionRepository{
 
 
-    Set<Question> questions = new HashSet<>();
+    Set<Question> questions = new LinkedHashSet<>();
 
     @PostConstruct
     public void init() {
