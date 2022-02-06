@@ -7,7 +7,6 @@ import pro.sky.java.cource2.examinerservice.model.Question;
 
 import javax.annotation.PostConstruct;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
