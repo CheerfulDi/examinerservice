@@ -52,34 +52,29 @@ public class MathQuestionServiceTest {
 
     @Test
     public void shouldAddToQuestionsSetByObject() {
-
         assertEquals(new Question(DEFAULT_QUESTION2,DEFAULT_ANSWER2),
                 out.add(new Question(DEFAULT_QUESTION2,DEFAULT_ANSWER2)));
     }
 
     @Test
     public void shouldRemoveFromQuestionsSet() {
-
         assertEquals(new Question(DEFAULT_QUESTION4, DEFAULT_ANSWER4),
                 out.remove(new Question(DEFAULT_QUESTION4,DEFAULT_ANSWER4)));
     }
 
     @Test
     public void shouldGetAllQuestions() {
-        mathQuestionRepositoryMock.getAll();
         assertEquals(questionsForTest.size(), out.getAll().size());
     }
 
     @Test
     public void shouldThrowQuestionExistException() {
-        mathQuestionRepositoryMock.getAll();
         assertThrows(QuestionExistsException.class,
                 ()-> out.add(DEFAULT_QUESTION5, DEFAULT_ANSWER5), "The q-a pair is already exist");
     }
 
     @Test
     public void shouldThrowQuestionNotFoundException() {
-        mathQuestionRepositoryMock.getAll();
         assertThrows(QuestionNotFoundException.class,
                 ()-> out.remove(new Question(DEFAULT_QUESTION1,DEFAULT_ANSWER1)), "Question is not found");
     }

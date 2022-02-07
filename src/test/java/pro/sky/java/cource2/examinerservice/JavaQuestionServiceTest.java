@@ -47,34 +47,29 @@ public class JavaQuestionServiceTest {
 
     @Test
     public void shouldAddToQuestionsSetByObject() {
-
         assertEquals(new Question(DEFAULT_QUESTION4,DEFAULT_ANSWER4),
                 out.add(new Question(DEFAULT_QUESTION4,DEFAULT_ANSWER4)));
     }
 
     @Test
     public void shouldRemoveFromQuestionsSet() {
-
         assertEquals(new Question(DEFAULT_QUESTION2, DEFAULT_ANSWER2),
                 out.remove(new Question(DEFAULT_QUESTION2,DEFAULT_ANSWER2)));
     }
 
     @Test
     public void shouldGetAllQuestions() {
-        javaQuestionRepositoryMock.getAll();
         assertEquals(questionsForTest.size(), out.getAll().size());
     }
 
     @Test
     public void shouldThrowQuestionExistException() {
-        javaQuestionRepositoryMock.getAll();
         assertThrows(QuestionExistsException.class,
                 ()-> out.add(DEFAULT_QUESTION3, DEFAULT_ANSWER3), "The q-a pair is already exist");
     }
 
     @Test
     public void shouldThrowQuestionNotFoundException() {
-        javaQuestionRepositoryMock.getAll();
         assertThrows(QuestionNotFoundException.class,
                 ()-> out.remove(new Question(DEFAULT_QUESTION4,DEFAULT_ANSWER4)), "Question is not found");
     }

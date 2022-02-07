@@ -17,9 +17,9 @@ public class MathQuestionRepository implements QuestionRepository {
 
     @PostConstruct
     public void init() {
-        new Question("2+2=?", "4");
-        new Question("5*5=?", "25");
-        new Question("27/3=?", "9");
+        questions.add(new Question("2+2=?", "4"));
+        questions.add(new Question("5*5=?", "25"));
+        questions.add(new Question("27/3=?", "9"));
     }
 
     @Override
